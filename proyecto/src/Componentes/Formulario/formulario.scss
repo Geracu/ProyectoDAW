@@ -1,0 +1,16 @@
+.formulario-custom {
+    padding: min(2rem, 5vw) min(2rem, 5vw) min(2.5rem, 5vw);
+    flex: 1 0 50%;
+    background: rgb(7, 102, 109);
+    border: 0.35rem solid;
+    text-align: center;
+
+}
+
+.button {
+    display: inline-block;
+    color: rgb(7, 102, 109);
+    text-decoration: none;
+    background: hwb(0 0% 100%);
+    font-weight: 1000;
+}
