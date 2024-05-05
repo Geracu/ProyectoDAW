@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Item from './Componentes/Item/item';
@@ -10,6 +11,9 @@ import { useSelector } from 'react-redux';
 
 function App() {
   const goals = useSelector((state) => state.goals.value);
+  const currentView = useSelector((state) => state.option.currentView);
+
+  const filteredGoals = goals.filter((goal) => goal.identifier === currentView);
 
   return (
     <div className="App">
@@ -19,8 +23,8 @@ function App() {
         <Row>
           <Col><Formulario></Formulario></Col>
           <Col>
-          {goals.map((tarea) => (
-            <Item name={tarea.name} description={tarea.description} dueDate={tarea.dueDate} isCompleted={tarea.isCompleted}></Item>
+          {filteredGoals.map((tarea) => (
+            <Item key={tarea.id} name={tarea.name} description={tarea.description} dueDate={tarea.dueDate} isCompleted={tarea.isCompleted}></Item>
           ))}
           </Col>
         </Row>
