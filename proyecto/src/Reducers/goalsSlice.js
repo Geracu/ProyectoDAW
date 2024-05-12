@@ -7,17 +7,37 @@ export const goalsSlice = createSlice({
   },
   reducers: {
     addGoal: (state, action) => {
-      const { name, description, dueDate, identifier } = action.payload;
-      state.value.push({ name, description, dueDate, isCompleted: false, identifier });
+      state.value.push(action.payload);
+      fetch("http://localhost:3001/goals/addGoals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "123456"
+        },
+        body: JSON.stringify(action.payload)
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
+    initAddGoal: (state, action) => {
+      console.log(action.payload);
+      state.value.push(action.payload);
     },
     completeGoal: (state, action) => {
-      const index = state.value.findIndex(goal => goal.name === action.payload.name);
-      if (index !== -1) {
-        state.value[index].isCompleted = true;
-      }
-    }
+      state.value = state.value.filter((goal) => goal.id !== action.payload.id);
+      fetch("http://localhost:3001/goals/removeGoals/" + action.payload.id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "123456"
+        },
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
+
   }
 })
 
-export const { addGoal, completeGoal } = goalsSlice.actions;
+export const { addGoal, initAddGoal, completeGoal } = goalsSlice.actions;
 export default goalsSlice.reducer;

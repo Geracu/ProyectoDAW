@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 export const optionSlice = createSlice({
     name:'option',
     initialState:{
-        currentView:'tasks'
+        currentView:'goals'
     },
     reducers:{
         changeView: (state, action) => {

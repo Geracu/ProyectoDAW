@@ -4,26 +4,28 @@ import Container from 'react-bootstrap/esm/Container';
 import './formulario.scss';
 import { useDispatch } from 'react-redux';
 import { addGoal } from '../../Reducers/goalsSlice';
+import { addTasks } from '../../Reducers/tasksSlice';
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
 
-function Formulario(props) {
+function Formulario({ currentView }) {
 
   const inputRefName = useRef();
   const inputRefDescription = useRef();
   const inputRefDueDate = useRef();
-  const currentView = useSelector((state) => state.option.currentView);
   const dispatch = useDispatch();
 
   const addItem = (e) => {
     e.preventDefault();
-    const identifier = currentView; // Use currentView as identifier
-    dispatch(addGoal({ 
-      'name': inputRefName.current.value, 
-      'description': inputRefDescription.current.value, 
-      'dueDate': inputRefDueDate.current.value, 
-      'identifier': identifier // Add identifier
-    }));
+    const nuevaTarjeta = {
+      'name': inputRefName.current.value,
+      'description': inputRefDescription.current.value,
+      'dueDate': inputRefDueDate.current.value
+    };
+    if (currentView === 'goals') {
+      dispatch(addGoal(nuevaTarjeta));
+    } else {
+      dispatch(addTasks(nuevaTarjeta));
+    }
   };
 
   const textoDeBoton = currentView === 'goals' ? 'Agregar Meta' : 'Agregar Tarea'

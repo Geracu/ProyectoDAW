@@ -7,9 +7,10 @@ import Container from 'react-bootstrap/Container';
 
 function Menu() {
     const dispatch = useDispatch();
-    const currentView = useSelector((state) => state.option.current);
+    const currentView = useSelector((state) => state.option.currentView);
 
-    const screenChanges = (option) => {
+    const screenChanges = (option,event) => {
+        event.preventDefault();
         dispatch(changeView(option));
     }
 
@@ -21,15 +22,15 @@ function Menu() {
                 <Navbar.Collapse>
                     <Nav>
                         <Nav.Link
-                            href='#Tasks'
-                            onClick={() => screenChanges('tasks')}
+                            href='#tasks'
+                            onClick={(e) => screenChanges('tasks', e)}
                             className={currentView === 'tasks' ? 'active' : ''}
                         >
                             Tasks
                         </Nav.Link>
                         <Nav.Link
-                            href='#Goals'
-                            onClick={() => screenChanges('goals')}
+                            href='#goals'
+                            onClick={(e) => screenChanges('goals',e)}
                             className={currentView === 'goals' ? 'active' : ''}
                         >
                             Goals
