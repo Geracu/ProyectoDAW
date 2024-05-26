@@ -39,6 +39,37 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Docker Integration
+
+This project includes a Dockerfile for building and running the app in a containerized environment using Docker and NGINX.
+
+### Building the Docker Image
+
+1. **Node.js Build Stage**: This stage installs all dependencies and builds the static files.
+   ```dockerfile
+   FROM node:20-alpine as builder
+   WORKDIR /app
+   COPY package*.json .
+   COPY package-lock.json .
+   RUN npm install
+   COPY . .
+   RUN npm run build
+
+2. NGINX Server Stage: This stage sets up NGINX to serve the static files
+    FROM nginx:1.19.0
+    WORKDIR /usr/share/nginx/html
+    RUN rm -rf ./*
+    COPY --from=builder /app/build .
+    ENTRYPOINT ["nginx", "-g", "daemon off;"]
+    
+### To build and run the Docker container:
+
+    docker build -t my-create-react-app .
+    docker run -p 80:80 my-create-react-app
+
+This will serve the app at http://localhost on port 80.
+
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
@@ -68,3 +99,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
